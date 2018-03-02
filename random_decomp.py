@@ -6,7 +6,7 @@ n = 8
 bond_dim = 2 * n
 site_dim = 2
 
-epsilon = 1
+epsilon = 1e-2
 
 def random_unitary(n):
 	
