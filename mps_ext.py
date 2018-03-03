@@ -239,17 +239,17 @@ def add_MPS(s1,s2,coeffs=[1,1],do_update=True,i1=1,i2='end'):
                 D[i]=2*max(s1.D[i],s2.D[i])
                 A[i]=np.zeros((q[i],s1.D[i-1],D[i]),dtype='complex')
                 A[i][:,:,0:s1.D[i]]=s1.A[i]*coeffs[0]
-                A[i][:,:,D[i]/2:D[i]/2+s2.D[i]]=s2.A[i]*coeffs[1]
+                A[i][:,:,D[i]//2:D[i]//2+s2.D[i]]=s2.A[i]*coeffs[1]
             elif i==i2:
                 D[i]=s1.D[i]
                 A[i]=np.zeros((q[i],D[i-1],D[i]),dtype='complex')
                 A[i][:,0:s1.D[i-1],:]=s1.A[i]
-                A[i][:,D[i-1]/2:D[i-1]/2+s2.D[i-1],:]=s2.A[i]
+                A[i][:,D[i-1]//2:D[i-1]//2+s2.D[i-1],:]=s2.A[i]
             else:
                 D[i]=2*max(s1.D[i],s2.D[i])
                 A[i]=np.zeros((q[i],D[i-1],D[i]),dtype='complex')
                 A[i][:,0:s1.D[i-1],0:s1.D[i]]=s1.A[i]
-                A[i][:,D[i-1]/2:D[i-1]/2+s2.D[i-1],D[i]/2:D[i]/2+s2.D[i]]=s2.A[i]
+                A[i][:,D[i-1]//2:D[i-1]//2+s2.D[i-1],D[i]//2:D[i]//2+s2.D[i]]=s2.A[i]
         else:
             D[i]=s1.D[i]
             A[i]=s1.A[i]

@@ -33,7 +33,7 @@ if not gsAlreadyFound:
     su.zero_tol = zero_tol
     su.randomize()
 #    print 'Initial energy = ',su.h_expect.real
-    print 'Finding g.s.'
+    print('Finding g.s.')
     for i in range(nSteps):
         su.take_step(step)
         su.update() 
@@ -75,22 +75,22 @@ s0 = me.make_trans_inv_mps_from_tensor(A,N)
 s0 = me.convert_tdvp_mps(s0,hamTermList)
 E0u = su.h_expect.real
 E0 = s0.H_expect.real/N
-print 'E gs finite: ',E0
-print 'E gs uniform: ',E0u
+print('E gs finite: '),E0
+print('E gs uniform: '),E0u
 
 
-mid = N/2-5
-x0=N/4-5
+mid = N//2-5
+x0=N//4-5
 DeltaX=5
 s1 = me.make_wavepacket_from_tensor(A,B1,N,x0,DeltaX,p1,i1=1,i2=mid-2,do_update=False)
-x0=3*N/4-10
+x0=3*N//4-10
 DeltaX=5
 s2 = me.make_wavepacket_from_tensor(A,B2,N,x0,DeltaX,p2,i1=mid+2,i2=N-1,do_update=False)
 s = me.join_MPS(s1,s2,mid)
 s = me.convert_tdvp_mps(s,hamTermList)
 me.plot_energy(s,'initial wavepacket joined')
-print 'E excitation eigenvalues: '+str(ev1[exct_ind1-1]+ev1[exct_ind2-1]-2*E0u)
-print 'E initial: '+str(s.H_expect.real/N-E0)
+print('E excitation eigenvalues: '+str(ev1[exct_ind1-1]+ev1[exct_ind2-1]-2*E0u))
+print('E initial: '+str(s.H_expect.real/N-E0))
 
 calc_mi=False
 zero_tol = 1E-10  #Zero-tolerance for the Schmidt coefficients squared (right canonical form)
@@ -106,7 +106,7 @@ if calc_mi:
     i2=int(round(N/2))-1
     i3=int(round(N/2))+1
     i4=int(round(3*N/4))-1
-    print 'N,i1,i2,i3,i4: ' + str([N,i1,i2,i3,i4])
+    print('N,i1,i2,i3,i4: ' + str([N,i1,i2,i3,i4]))
     miList=np.zeros(nSteps+1)
     miList[0]=me.mutual_information_disconn(s,i1,i2,i3,i4,truncate=mi_trunc)
 
