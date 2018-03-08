@@ -51,21 +51,36 @@ if __name__ == "__main__":
     from generate_block_tensor import generate_block_tensor, random_unitary
     np.set_printoptions(suppress=True, linewidth=120)
 
+    noise_eps = 1e-6
     block_shapes = [[1,1,1], [2,2,3], [2,2,3]]
     block_MPS = generate_block_tensor(block_shapes,
                                       block_generator=random_unitary)
-    print(block_MPS)
+    block_MPS_noise = block_MPS + noise_eps*np.ones_like(block_MPS)
 
-    # Mix up the blocks with a random unitary
-    dphys = block_MPS.shape[0]
-    dL = block_MPS.shape[1]
-    dR = block_MPS.shape[2]
-    Vphys = random_unitary((dphys, dphys))
-    VL = random_unitary((dL, dL))
-    VR = random_unitary((dR, dR))
-    block_MPS = np.einsum('aij, ab, il, jk -> blk', block_MPS, Vphys, VL, VR)
-    print(block_MPS)
+    GHZ_dim = 3
+    GHZ = np.zeros((GHZ_dim,)*3, dtype=np.complex_)
+    for i in range(GHZ_dim):
+        GHZ[i,i,i] = 1.
+    GHZ_noise = GHZ + noise_eps*np.ones_like(GHZ)
 
-    block_MPS, UR, UL = jan_MPS_block_finder(block_MPS)
-    print(block_MPS)
+    Gammas = [GHZ, GHZ_noise, block_MPS, block_MPS_noise]
+    for Gamma in Gammas:
+        print("="*70)
+        print(Gamma)
+
+        # Mix up the blocks with random unitaries.
+        dphys = Gamma.shape[0]
+        dL = Gamma.shape[1]
+        dR = Gamma.shape[2]
+        Vphys = random_unitary((dphys, dphys))
+        VL = random_unitary((dL, dL))
+        #VR = random_unitary((dR, dR))
+        VR = VL.conjugate()
+        Gamma = np.einsum('aij, ab, il, jk -> blk', Gamma, Vphys, VL, VR)
+        print("- "*30)
+        print(Gamma)
+
+        Gamma, UR, UL = jan_MPS_block_finder(Gamma)
+        print("- "*30)
+        print(Gamma)
 
