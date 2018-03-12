@@ -3,6 +3,7 @@ import pdb
 from scipy import linalg
 import copy
 
+epsilon = 1e-10
 
 #(...(ab)...) --> (...ab...) a and b are now different axes, though adjacent to each other
 def split_axes(M, i, m, n):
@@ -22,7 +23,7 @@ def merge_axes(M, i, j):
 		M_mer = np.concatenate(M_mer, axis = i - 1)
 	else:
 		M_mer = np.concatenate(M_mer, axis = i)
-		
+			
 	return M_mer
 	
 def matr_tensor(A, B):
