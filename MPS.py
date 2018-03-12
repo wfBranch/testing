@@ -4,14 +4,6 @@ from scipy import linalg
 import copy
 
 
-#Apply two-site gate to gamma1 and gamma2.
-#Input parameters: gamma1, gamma2 matrices at two sites
-#Lambda 
-#Alpha, eta 
-
-#Values smaller than this are deleted(perhaps remove this...)
-epsilon = 1e-10
-
 #(...(ab)...) --> (...ab...) a and b are now different axes, though adjacent to each other
 def split_axes(M, i, m, n):
 	
